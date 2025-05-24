@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title class="ion-text-start">
+      Jolo Chat
+    </ion-title>
+    <ion-select [disabled]="!models.length" (ionChange)="selectModel($event)" interface="popover" slot="end" [placeholder]="modeloSelecionado" >
+      <ion-select-option [disabled]="model === 'llava:7b'" *ngFor="let model of models" [value]="model">{{model}}</ion-select-option>
+    </ion-select>
+    <ion-buttons slot="end">
+      <ion-button size="small" fill="clear" (click)="clearChat()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light" class="chat-content" id="chatContainer">
+  <ion-list color="transparent" lines="none">
+  <ion-row>
+    <ion-col [size]="width > 600 ? 2: 0"></ion-col>
+    <ion-col class="lista-chat" [size]="width > 600 ? 8: 12">
+        <ion-item *ngFor="let msg of messages" class="message-bubble" [class.user]="msg.sender === 'user'" [class.bot]="msg.sender === 'bot'" lines="none">
+          <p class="message-content" [innerHTML]="msg.text | markdown | async"></p>
+        </ion-item>
+    </ion-col>
+    <ion-col [size]="width > 600 ? 2: 0"></ion-col>
+  </ion-row>
+  <br>
+</ion-list>
+  <div id="loader" class="loader" *ngIf="loading"></div>
+  <p class="copyright">powered by Jolo Systems</p>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-item color="light" lines="none" class="input-container">
+      <ion-input
+        color="light"
+        [(ngModel)]="messageInput"
+        id="userInput"
+        placeholder="Digite sua mensagem..."
+        (keydown.enter)="sendMessage()"
+        class="chat-input"
+      ></ion-input>
+    </ion-item>
+    <ion-buttons slot="end" color="transparent">
+      <ion-button [disabled]="modeloSelecionado !== 'llava:7b'" fill="clear" color="dark">
+        <ion-icon name="image-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="!messageInput.length" fill="clear" (click)="sendMessage()" color="dark">
+        <ion-icon name="send" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
