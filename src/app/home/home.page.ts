@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+declare var hljs: any;
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,10 @@ export class HomePage implements OnInit {
     this.getMessagesFromStorage()
   }
 
+  ngAfterViewChecked() {
+    hljs.highlightAll(); // reaplica o highlight
+  }
+  
   ionViewWillEnter() {
   }
 
