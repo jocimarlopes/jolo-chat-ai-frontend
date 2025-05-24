@@ -14,8 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="light" class="chat-content" id="chatContainer">
-  <ion-list color="transparent" lines="none">
+<ion-content [fullscreen]="true" class="chat-content" id="chatContainer">
   <ion-row>
     <ion-col [size]="width > 600 ? 2: 0"></ion-col>
     <ion-col class="lista-chat" [size]="width > 600 ? 8: 12">
@@ -26,7 +25,6 @@
     <ion-col [size]="width > 600 ? 2: 0"></ion-col>
   </ion-row>
   <br>
-</ion-list>
   <div id="loader" class="loader" *ngIf="loading"></div>
   <p class="copyright">powered by Jolo Systems</p>
 </ion-content>
