@@ -1,5 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -17,15 +16,16 @@ export class HomePage implements OnInit {
   models: string[] = []
   modeloSelecionado: string = 'mistral:7b'
 
-  @ViewChild('chatContainer', { static: false }) chatContainer!: ElementRef;
-
-  constructor(private http: HttpClient, private alertController: AlertController) {}
+  constructor(private alertController: AlertController, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.scrollToBottom();
     this.lastModelUsed()
     this.getModels()
     this.getMessagesFromStorage()
+  }
+
+  ionViewWillEnter() {
   }
 
   lastModelUsed() {
@@ -47,11 +47,26 @@ export class HomePage implements OnInit {
     const apiUrl = "https://eaa6-143-0-229-172.ngrok-free.app/stream";
 
     try {
-      const req = new Request(apiUrl, {
-        method: "POST",
-        headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ prompt: message, model: this.modeloSelecionado })
-      });
+      let req: Request;
+
+      if (this.modeloSelecionado === 'llava:7b' && (document.getElementById('imagemUpload') as HTMLInputElement)?.files?.[0]) {
+        const fileInput = document.getElementById('imagemUpload') as HTMLInputElement;
+        const formData = new FormData();
+        formData.append('prompt', message);
+        formData.append('model', this.modeloSelecionado);
+        formData.append('image', fileInput.files![0]);
+
+        req = new Request(apiUrl, {
+          method: "POST",
+          body: formData
+        });
+      } else {
+        req = new Request(apiUrl, {
+          method: "POST",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ prompt: message, model: this.modeloSelecionado })
+        });
+      }
 
       const response = await fetch(req);
       const reader = response.body?.getReader();
@@ -60,10 +75,6 @@ export class HomePage implements OnInit {
 
       while (true) {
         const { done, value } = await reader!.read();
-        console.log(done, '<- done');
-        console.log(value, '<- value');
-        
-        
         if (done) break;
 
         const chunk = decoder.decode(value);
@@ -96,9 +107,9 @@ export class HomePage implements OnInit {
 
   scrollToBottom() {
     setTimeout(() => {
-      const container = this.chatContainer?.nativeElement;
-      if (container) container.scrollTop = container.scrollHeight;
-    }, 150);
+      const container = document.getElementById('listaChat')
+      if (container) container.scrollTop = window.innerHeight;
+    }, 300); // tempo maior pode ajudar
   }
 
   getMessagesFromStorage() {
@@ -152,4 +163,18 @@ export class HomePage implements OnInit {
   } 
 
   cancelar() {}
+
+  triggerImageUpload() {
+    const fileInput = document.getElementById('imagemUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  // onImageSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     console.log("Imagem selecionada:", file.name);
+  //   }
+  // }
 }

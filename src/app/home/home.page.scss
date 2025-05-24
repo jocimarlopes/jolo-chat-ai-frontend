@@ -126,5 +126,7 @@ ul {
   margin-bottom: 1rem;
 }
 ion-content {
+  height: 100%;
+  overflow-y: auto;
   --background: var(--ion-item-background)
 }
