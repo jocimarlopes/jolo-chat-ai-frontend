@@ -1,0 +1,167 @@
+
+
+.floating-input-container {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 700px;
+  z-index: 999;
+  padding: 0 8px;
+}
+
+.input-container-glass {
+  --background: rgba(255, 255, 255, 0.08);
+  --border-radius: 16px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.chat-input-glass {
+  width: 100%;
+  font-size: 16px;
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.4);
+  resize: none;
+  overflow-y: auto;
+  background: transparent;
+  --padding-bottom: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+  .floating-input-container {
+    position: sticky;
+    bottom: 36px;
+    transform: translateX(0%);
+    bottom: 36px;
+    width: 98%;
+    padding: 0 4px;
+  }
+
+  .chat-input-glass {
+    font-size: 15px;
+  }
+}
+// Model select styling
+.model-select-container {
+  position: relative;
+  display: inline-flex;
+  z-index: 1;
+}
+
+ion-select {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --min-height: 20px;
+  font-size: 13px;
+  --background: rgba(255, 255, 255, 0.15);
+  color: white;
+  --background: transparent;
+}
+ion-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/background.jpg');
+    background-size: cover;
+    background-position: top;
+    filter: brightness(0.5) blur(15px);
+    z-index: -2;
+  }
+  
+  ion-content {
+    position: relative;
+    z-index: 0;
+    backdrop-filter: blur(8px);
+    --background: transparent;
+  }
+  
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    ion-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+  // .logo-home {
+  //   width: 70%;
+  //   max-width: 300px;
+  //   position: fixed;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate(-50%, -50%);
+  //   z-index: 1;
+  //   filter: brightness(0.5) blur(5px);
+  // }
+
+  .logo-header {
+    height: 40px;
+    padding: 3px;
+    margin-left: 10px;
+  }
+.message-bubble img {
+  max-height: 50px;
+  border-radius: 10px;
+  margin-top: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+.image-preview {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  padding: 2px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.remove-image-button ion-icon {
+  font-size: 14px;
+  color: white;
+}

@@ -20,9 +20,9 @@ export class MarkdownPipe implements PipeTransform {
     // Corrige blocos de código não fechados (exemplo simples)
     const openBlocks = (cleaned.match(/```/g) || []).length;
     if (openBlocks % 2 !== 0) {
-      cleaned += '\n```';  // fecha bloco aberto
+      cleaned += '\n```';
     }
   
-    return await marked.parse(cleaned);
+    return `<div class="markdown-output">${await marked.parse(cleaned)}</div>`;
   }
 }

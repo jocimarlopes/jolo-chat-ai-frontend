@@ -9,13 +9,14 @@ declare var hljs: any;
   standalone: false,
 })
 export class HomePage implements OnInit {
-  messages: { sender: 'user' | 'bot', text: string }[] = [];
+  messages: { sender: 'user' | 'bot', text: string, image?: string }[] = [];
   messageInput: string = '';
   loading = false;
   width: number = window.innerWidth
 
   models: string[] = []
   modeloSelecionado: string = 'mistral:7b'
+  previewImage: string | null = null;
 
   constructor(private alertController: AlertController, private cdRef: ChangeDetectorRef) {}
 
@@ -29,7 +30,7 @@ export class HomePage implements OnInit {
   ngAfterViewChecked() {
     hljs.highlightAll(); // reaplica o highlight
   }
-  
+
   ionViewWillEnter() {
   }
 
@@ -42,7 +43,12 @@ export class HomePage implements OnInit {
     const message = this.messageInput.trim();
     if (!message) return;
 
-    this.messages.push({ sender: 'user', text: message });
+    if (this.previewImage) {
+      this.messages.push({ sender: 'user', text: message, image: this.previewImage });
+      this.previewImage = null;
+    } else {
+      this.messages.push({ sender: 'user', text: message });
+    }
     this.messageInput = '';
     this.loading = true;
 
@@ -112,8 +118,8 @@ export class HomePage implements OnInit {
 
   scrollToBottom() {
     setTimeout(() => {
-      const container = document.getElementById('listaChat')
-      if (container) container.scrollTop = window.innerHeight;
+      const container = document.getElementById('chatContainer')
+      if (container) container.scrollTop = container.scrollHeight;
     }, 300); // tempo maior pode ajudar
   }
 
@@ -176,10 +182,22 @@ export class HomePage implements OnInit {
     }
   }
 
-  // onImageSelected(event: any) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     console.log("Imagem selecionada:", file.name);
-  //   }
-  // }
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage() {
+    this.previewImage = null;
+    const fileInput = document.getElementById('imagemUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 }
