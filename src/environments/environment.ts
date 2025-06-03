@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  JOLOCHAT_API: 'https://eaa6-143-0-229-172.ngrok-free.app'
+  JOLOCHAT_API: 'https://e63e-143-0-229-90.ngrok-free.app'
 };
 
 /*

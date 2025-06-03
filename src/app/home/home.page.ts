@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 declare var hljs: any;
 
 @Component({
@@ -55,7 +56,7 @@ export class HomePage implements OnInit {
     const botMsg: any = { sender: 'bot', text: '' };
     this.messages.push(botMsg);
 
-    const apiUrl = "https://eaa6-143-0-229-172.ngrok-free.app/stream";
+    const apiUrl = `${environment.JOLOCHAT_API}/stream`;
 
     try {
       let req: Request;
